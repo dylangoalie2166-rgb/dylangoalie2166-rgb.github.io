@@ -18,6 +18,7 @@
     nothing: "There's nothing to pay on this account right now.",
     method: "Online payment isn't available for this balance. Please contact the business to arrange payment.",
     error: "Something went wrong opening the payment page. Please try the link again in a few minutes.",
+    large: "This balance is too large to pay online. Please pay by EFT or cheque using the payment details in the message from the business, or contact them for details.",
   };
   var r = new URLSearchParams(location.search).get('r');
   if (reasons[r]) document.getElementById('why').textContent = reasons[r];
