@@ -38,6 +38,25 @@ alone, and lets you review everything before the AI starts. Upload next month's 
 who has paid is detected automatically. For business customers, set "My clients are: Businesses" in
 the Account tab so the AI calls on weekdays during business hours.</p>
 
+<h3 id="ar-template">What should my AR report include?</h3>
+<p>Most accounting systems (QuickBooks, Xero, Sage…) can print an <strong>AR aging report</strong> —
+upload it as is. If you're building one yourself, use our template:
+<a href="ar-template.csv" download>AR report template (CSV)</a>. One row per customer:</p>
+<ul>
+<li><strong>Customer # and name</strong> — the name the AI will use on the call.</li>
+<li><strong>Payment terms</strong> — e.g. Net 30. BuckBack only chases what's past those terms.</li>
+<li><strong>Total owing</strong>, then how much of it is <strong>0–29, 30–59, 60–89, 90–119, 120–149, 150–179 and 180+ days</strong> old.
+Use a minus sign for credits.</li>
+<li><strong>Last payment date and amount</strong> — optional.</li>
+</ul>
+<p>Then add your <strong>contact list</strong> so the AI can reach each customer:
+<a href="contacts-template.csv" download>contact list template (CSV)</a> — customer # and name
+(matching the AR report), the accounts payable contact, phone and email. Without a phone number the
+AI can't call; without an email it can't send a demand letter.</p>
+<p>Open either template in Excel, Numbers or Google Sheets, replace the example rows, and save it as
+CSV. The examples show the three cases: Example Plumbing is collected ($3,250 is past its 30-day
+terms), Sample Builders isn't due yet (60-day terms), and Demo Cafe has a credit, so it's left alone.</p>
+
 <h3>What's a demand letter?</h3>
 <p>If a client doesn't answer 5 calls in a row, BuckBack emails them a formal letter asking for
 payment within 10 days, with your payment link and a summary of the times we tried to reach them.

@@ -1,0 +1,4 @@
+Customer #,Customer name,Payment terms,Total owing,Current (0-29 days),30-59 days,60-89 days,90-119 days,120-149 days,150-179 days,180+ days,Last payment date,Last payment amount
+1001,Example Plumbing Ltd.,Net 30,4250.00,1000.00,1250.00,2000.00,0,0,0,0,2026-07-15,500.00
+1002,Sample Builders Inc.,Net 60,1800.00,0,1800.00,0,0,0,0,0,2026-08-02,1200.00
+1003,Demo Cafe,Net 30,-150.00,-150.00,0,0,0,0,0,0,2026-09-20,600.00
