@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Billing · BuckBack</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1 id="title">Payment method saved</h1>
+<p class="lede" id="body">BuckBack will use it for your monthly statement — only ever for fees on
+money recovered for you. You can close this page and go back to the app.</p>
+</main>
+<script>
+  if (new URLSearchParams(location.search).get('cancelled')) {
+    document.getElementById('title').textContent = 'Nothing saved';
+    document.getElementById('body').textContent =
+      'No payment method was added. You can add one any time from the Account tab in the app.';
+  }
+</script>
+</body>
+</html>

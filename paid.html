@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Payment received · BuckBack</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1 id="title">Thank you!</h1>
+<p class="lede" id="body">Your payment is on its way. If you paid by bank transfer, it can take
+3–5 business days to clear — you don't need to do anything else, and you won't be asked to pay
+again while it does.</p>
+<p>You'll get a receipt by email. Questions about the bill? Reply to the business's message or
+contact them directly.</p>
+</main>
+<script>
+  if (new URLSearchParams(location.search).get('already')) {
+    document.getElementById('title').textContent = 'Already paid';
+    document.getElementById('body').textContent =
+      "This balance has already been paid — there's nothing more to pay. Thank you!";
+  }
+</script>
+</body>
+</html>

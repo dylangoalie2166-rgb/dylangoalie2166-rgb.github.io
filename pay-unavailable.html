@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Payment unavailable · BuckBack</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>This payment link isn't available</h1>
+<p class="lede" id="why">Please contact the business that sent it, and they'll send you a new way to pay.</p>
+</main>
+<script>
+  var reasons = {
+    notfound: "This link isn't valid. Please check you opened the full link from the message, or contact the business that sent it.",
+    setup: "The business isn't set up to take online payments yet. Please contact them to arrange payment.",
+    nothing: "There's nothing to pay on this account right now.",
+    method: "Online payment isn't available for this balance. Please contact the business to arrange payment.",
+    error: "Something went wrong opening the payment page. Please try the link again in a few minutes.",
+  };
+  var r = new URLSearchParams(location.search).get('r');
+  if (reasons[r]) document.getElementById('why').textContent = reasons[r];
+</script>
+</body>
+</html>

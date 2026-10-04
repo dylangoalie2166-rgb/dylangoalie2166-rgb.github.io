@@ -46,6 +46,8 @@ requests: <a href="mailto:dylangoalie2166@gmail.com">dylangoalie2166@gmail.com</
   <li><strong>Notifications:</strong> if you allow notifications, your phone's notification ID is
     stored so we can alert you about payments, promises and clients who need you. It's deleted when
     you sign out or delete your account.</li>
+  <li><strong>Fees:</strong> if you add a card or bank account for BuckBack's monthly statement,
+    Stripe holds those details; we store only a label like "Visa •••• 4242".</li>
   <li><strong>Payment setup:</strong> if you connect Stripe to get paid, Stripe collects your
     business, identity and bank details directly. We store only your Stripe account ID and
     whether it's ready to accept payments.</li>
@@ -64,8 +66,10 @@ requests: <a href="mailto:dylangoalie2166@gmail.com">dylangoalie2166@gmail.com</
     leaves, and outcomes such as a date the client says they'll pay by.</li>
   <li><strong>Text messages:</strong> texts sent to and from the assistant are stored. If a card
     number is texted to us, it is removed before the message is stored or processed.</li>
-  <li><strong>Payments:</strong> clients pay through a secure Stripe page. Card details go
-    directly to Stripe; we never see or store them. We record only whether an invoice was
+  <li><strong>Payments:</strong> clients pay through a secure Stripe page, by card or bank
+    transfer. Card and bank account details go directly to Stripe; we never see or store them.
+    We record how much was paid and when (including payments a business records as received
+    directly), and whether an invoice was
     paid.</li>
   <li><strong>Opt-outs:</strong> if a client asks not to be contacted, or texts STOP, we keep their
     phone number on a do-not-contact list so we can honor that.</li>

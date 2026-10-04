@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Secure payment · BuckBack</title>
+<link rel="stylesheet" href="style.css">
+<script>
+  // Opens a fresh secure Stripe checkout for this account's current balance.
+  (function () {
+    var t = new URLSearchParams(location.search).get('t') || '';
+    if (/^[a-f0-9]{32}$/.test(t)) {
+      location.replace('https://euefhwgvjkyqtpghivcq.supabase.co/functions/v1/pay?t=' + t);
+    } else {
+      location.replace('pay-unavailable.html?r=notfound');
+    }
+  })();
+</script>
+</head>
+<body>
+<main>
+<h1>Opening secure payment…</h1>
+<p class="lede">You'll be taken to Stripe to pay by card or bank transfer.</p>
+</main>
+</body>
+</html>

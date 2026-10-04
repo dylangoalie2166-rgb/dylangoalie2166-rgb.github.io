@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Payment not completed · BuckBack</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<h1>Payment not completed</h1>
+<p class="lede">No payment was made. When you're ready, you can try again.</p>
+<p><a id="again" href="#">Try again</a></p>
+</main>
+<script>
+  var t = new URLSearchParams(location.search).get('t') || '';
+  document.getElementById('again').href = 'pay.html?t=' + encodeURIComponent(t);
+</script>
+</body>
+</html>
