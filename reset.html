@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Reset your BuckBack password</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  label { display: block; font-weight: 600; margin: 14px 0 4px; }
+  input { width: 100%; font: inherit; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 8px;
+          background: var(--bg); color: var(--text); }
+  button { margin-top: 18px; font: inherit; font-weight: 600; padding: 11px 18px; border: 0; border-radius: 8px;
+           background: #0a7ea4; color: #fff; cursor: pointer; }
+  button[disabled] { opacity: 0.6; cursor: default; }
+  .error { color: #c0392b; }
+  [hidden] { display: none; }
+</style>
+</head>
+<body>
+<main>
+<p class="back"><a href="index.html">BuckBack</a></p>
+<h1>Reset your password</h1>
+
+<p id="checking" class="lede">Checking your link…</p>
+
+<div id="expired" hidden>
+  <p>This link has expired or has already been used.</p>
+  <p>Open the BuckBack app, tap <strong>Forgot password?</strong> on the sign-in screen, and we'll email you a new one.</p>
+</div>
+
+<form id="form" hidden>
+  <p>Choose a new password for your BuckBack account.</p>
+  <label for="password">New password</label>
+  <input id="password" type="password" autocomplete="new-password" minlength="6" required>
+  <label for="confirm">Type it again</label>
+  <input id="confirm" type="password" autocomplete="new-password" minlength="6" required>
+  <p id="problem" class="error" hidden></p>
+  <button id="save" type="submit">Save new password</button>
+</form>
+
+<div id="done" hidden>
+  <p class="lede">Your password has been changed.</p>
+  <p>Open the BuckBack app and sign in with your new password.</p>
+</div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // The link in the reset email signs this page in just long enough to set a
+  // new password (Supabase puts a one-time recovery session in the address).
+  // The key below is the project's publishable key — the same one the app ships.
+  const client = supabase.createClient(
+    'https://euefhwgvjkyqtpghivcq.supabase.co',
+    'sb_publishable_PYe2X_7SZHgAKbhiZ83q4Q_JOlVarMn',
+    { auth: { detectSessionInUrl: true, persistSession: false, autoRefreshToken: false } },
+  );
+  const show = (id) => {
+    for (const el of ['checking', 'expired', 'form', 'done']) document.getElementById(el).hidden = el !== id;
+  };
+
+  let ready = false;
+  const open = () => {
+    if (ready) return;
+    ready = true;
+    // Don't leave the one-time token sitting in the address bar.
+    history.replaceState(null, '', location.pathname);
+    show('form');
+  };
+  client.auth.onAuthStateChange((event, session) => {
+    if (session && (event === 'PASSWORD_RECOVERY' || event === 'SIGNED_IN' || event === 'INITIAL_SESSION')) open();
+  });
+  client.auth.getSession().then(({ data }) => data.session && open());
+  // No session from the link (expired, used, or opened without one).
+  const failed = /error=/.test(location.hash + location.search);
+  setTimeout(() => !ready && show('expired'), failed ? 0 : 4000);
+
+  const form = document.getElementById('form');
+  const problem = document.getElementById('problem');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const password = document.getElementById('password').value;
+    const say = (text) => {
+      problem.textContent = text;
+      problem.hidden = false;
+    };
+    if (password.length < 6) return say('Use at least 6 characters.');
+    if (password !== document.getElementById('confirm').value) return say('Those two passwords don’t match.');
+    problem.hidden = true;
+    const button = document.getElementById('save');
+    button.disabled = true;
+    const { error } = await client.auth.updateUser({ password });
+    button.disabled = false;
+    if (error) return say(error.message);
+    await client.auth.signOut().catch(() => {});
+    show('done');
+  });
+</script>
+</body>
+</html>
