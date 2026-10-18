@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Confirm your BuckBack email</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .error { color: #c0392b; }
+  [hidden] { display: none; }
+</style>
+</head>
+<body>
+<main>
+<p class="back"><a href="index.html">BuckBack</a></p>
+<h1>Confirm your email</h1>
+
+<p id="checking" class="lede">Confirming your email…</p>
+
+<div id="done" hidden>
+  <p class="lede">Your email is confirmed.</p>
+  <p>Go back to the BuckBack app and sign in.</p>
+</div>
+
+<div id="expired" hidden>
+  <p>This link has expired or has already been used.</p>
+  <p>If you can sign in to the BuckBack app, you're all set. If not, sign up again with the same email
+    and we'll send a new link, or write to <a href="mailto:hello@buckback.ca">hello@buckback.ca</a>.</p>
+</div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // The "Confirm signup" email (Supabase → Authentication → Emails) links here
+  // with ?token_hash=…&type=email. Confirming happens only when this page runs
+  // it, not when the link is merely fetched. The key below is the project's
+  // publishable key — the same one the app ships.
+  const client = supabase.createClient(
+    'https://euefhwgvjkyqtpghivcq.supabase.co',
+    'sb_publishable_PYe2X_7SZHgAKbhiZ83q4Q_JOlVarMn',
+    { auth: { detectSessionInUrl: false, persistSession: false, autoRefreshToken: false } },
+  );
+  const show = (id) => {
+    for (const el of ['checking', 'done', 'expired']) document.getElementById(el).hidden = el !== id;
+  };
+
+  const params = new URLSearchParams(location.search);
+  const tokenHash = params.get('token_hash');
+  // Don't leave the one-time token sitting in the address bar.
+  history.replaceState(null, '', location.pathname);
+
+  if (!tokenHash) {
+    show('expired');
+  } else {
+    client.auth
+      .verifyOtp({ token_hash: tokenHash, type: params.get('type') || 'email' })
+      .then(async ({ error }) => {
+        if (error) return show('expired');
+        // Confirming signs this browser in; the account is used in the app, not here.
+        await client.auth.signOut().catch(() => {});
+        show('done');
+      })
+      .catch(() => show('expired'));
+  }
+</script>
+</body>
+</html>
