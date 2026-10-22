@@ -1,37 +1,147 @@
+/* buckback.ca — one stylesheet for every page. Colours match the app's
+   theme (App.js, `light` / `dark`). */
 :root {
-  --bg: #ffffff;
-  --text: #1c1c1e;
-  --muted: #6b6b70;
-  --link: #0a66d6;
-  --rule: #e5e5ea;
+  --bg: #f4f5f7;
+  --surface: #ffffff;
+  --text: #101828;
+  --muted: #5d6676;
+  --rule: #e4e7ec;
+  --accent: #0b6e8f;
+  --accent-hover: #095a75;
+  --accent-text: #0b6e8f;
+  --accent-soft: #e7f3f7;
+  --on-accent: #ffffff;
+  --error: #b42318;
+  --shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 8px 24px rgba(16, 24, 40, 0.06);
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #111113;
-    --text: #f2f2f5;
-    --muted: #a1a1a8;
-    --link: #5aa2ff;
-    --rule: #2c2c30;
+    --bg: #0b0f14;
+    --surface: #151b23;
+    --text: #f2f4f7;
+    --muted: #a3acb9;
+    --rule: #263040;
+    --accent: #1a86a8;
+    --accent-hover: #2196bb;
+    --accent-text: #62c3e0;
+    --accent-soft: #11303b;
+    --error: #f97066;
+    --shadow: none;
   }
 }
+
 * { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
   font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
-main { max-width: 720px; margin: 0 auto; padding: 40px 16px 64px; }
-h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 8px; }
-h2 { font-size: 1.3rem; margin: 36px 0 8px; padding-top: 20px; border-top: 1px solid var(--rule); }
-h3 { font-size: 1.05rem; margin: 20px 0 4px; }
-p, ul { margin: 0 0 14px; }
-ul { padding-left: 22px; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+main.narrow { max-width: 520px; }
+
+h1 { font-size: 2rem; line-height: 1.2; letter-spacing: -0.02em; margin: 0 0 10px; }
+h2 { font-size: 1.3rem; line-height: 1.3; margin: 40px 0 10px; padding-top: 24px; border-top: 1px solid var(--rule); }
+h3 { font-size: 1.05rem; margin: 22px 0 4px; }
+p, ul, ol { margin: 0 0 14px; }
+ul, ol { padding-left: 22px; }
 li { margin-bottom: 6px; }
-a { color: var(--link); }
-.meta, .back { color: var(--muted); font-size: 0.95rem; }
-.back { margin-bottom: 24px; }
-.back a { text-decoration: none; }
+a { color: var(--accent-text); text-underline-offset: 2px; }
+strong { font-weight: 650; }
+.meta { color: var(--muted); font-size: 0.95rem; }
 .lede { font-size: 1.15rem; color: var(--muted); }
+[hidden] { display: none !important; }
+
+/* The brand bar at the top of every page (<p class="back"><a>BuckBack</a></p>). */
+.back { margin: 0 0 32px; }
+.back a {
+  display: inline-flex; align-items: center; gap: 10px;
+  color: var(--text); text-decoration: none; font-weight: 700; font-size: 1.15rem; letter-spacing: -0.01em;
+}
+.back a::before {
+  content: ""; width: 34px; height: 34px; border-radius: 9px;
+  background: url(icon.png) center / cover;
+}
+
+/* Cards: a form or a step of setting up. */
+.panel {
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 16px;
+  padding: 28px 24px; box-shadow: var(--shadow);
+}
+.panel h1 { font-size: 1.6rem; }
+.panel > :last-child { margin-bottom: 0; }
+.below { text-align: center; color: var(--muted); margin-top: 18px; }
+
+/* Forms. */
+label { display: block; font-weight: 600; font-size: 0.95rem; margin: 16px 0 6px; }
+input[type=email], input[type=password], input[type=text] {
+  width: 100%; font: inherit; padding: 11px 13px; border: 1px solid var(--rule); border-radius: 10px;
+  background: var(--bg); color: var(--text);
+}
+input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+.check { display: flex; gap: 10px; align-items: flex-start; font-weight: normal; font-size: 1rem; margin-top: 18px; }
+.check input { margin-top: 5px; flex: none; width: 18px; height: 18px; accent-color: var(--accent); }
+.error { color: var(--error); margin-top: 12px; }
+
+/* Buttons (and links that look like them). */
+button, .btn {
+  display: inline-block; margin-top: 20px; font: inherit; font-weight: 600; text-align: center; text-decoration: none;
+  padding: 12px 20px; border: 0; border-radius: 10px; cursor: pointer;
+  background: var(--accent); color: var(--on-accent);
+}
+.panel button:not(.link), .panel .btn { width: 100%; }
+button:hover, .btn:hover { background: var(--accent-hover); }
+.btn.secondary { background: var(--accent-soft); color: var(--accent-text); }
+.btn.secondary:hover { background: var(--accent-soft); filter: brightness(0.97); }
+button.link {
+  background: none; color: var(--accent-text); padding: 0; margin: 0; font-weight: 600; width: auto;
+  text-decoration: underline; text-underline-offset: 2px;
+}
+button[disabled] { opacity: 0.6; cursor: default; }
+
+/* Setting up: "Step 1 of 3" and the two-step QR code. */
+.steps { color: var(--accent-text); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+.qr { display: block; width: 200px; height: 200px; background: #fff; padding: 10px; border-radius: 12px; margin: 10px auto 16px; border: 1px solid var(--rule); }
+.key { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.95rem; word-break: break-all; }
+.code { letter-spacing: 0.35em; font-size: 1.2rem; text-align: center; }
+.note { background: var(--accent-soft); border-radius: 12px; padding: 14px 16px; font-size: 0.97rem; }
+
+/* Home page. */
+.hero { display: flex; gap: 32px; align-items: center; padding: 16px 0 8px; }
+.hero h1 { font-size: 2.6rem; }
+.hero .lede { font-size: 1.2rem; }
+.hero-art { flex: none; width: 200px; height: 200px; border-radius: 44px; box-shadow: var(--shadow); }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+.cta-row .btn { margin-top: 12px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 16px 0; }
+.cards .panel { padding: 20px; }
+.cards h3 { margin-top: 0; }
+.cards p { color: var(--muted); font-size: 0.97rem; margin: 0; }
+.num {
+  display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; margin-bottom: 10px;
+  background: var(--accent-soft); color: var(--accent-text); font-weight: 700; font-size: 0.9rem;
+}
+.rates { list-style: none; padding: 0; margin: 0; }
+.rates li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); margin: 0; }
+.rates li:last-child { border-bottom: 0; }
+.rates strong { color: var(--accent-text); }
+.ticks { list-style: none; padding: 0; }
+.ticks li { padding-left: 28px; position: relative; }
+.ticks li::before { content: "✓"; position: absolute; left: 4px; color: var(--accent-text); font-weight: 700; }
+
+/* Footer, and the old home-page link list. */
 .links { list-style: none; padding: 0; }
 .links li { margin-bottom: 10px; font-size: 1.1rem; }
+footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 0.92rem; }
+footer a { color: var(--muted); margin-right: 16px; white-space: nowrap; display: inline-block; }
+
+@media (max-width: 640px) {
+  h1 { font-size: 1.7rem; }
+  .hero { flex-direction: column-reverse; align-items: flex-start; gap: 16px; }
+  .hero h1 { font-size: 2rem; }
+  .hero-art { width: 96px; height: 96px; border-radius: 22px; }
+  .cta-row .btn { flex: 1 1 100%; }
+  .panel { padding: 22px 18px; }
+}

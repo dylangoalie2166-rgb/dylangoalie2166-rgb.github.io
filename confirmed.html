@@ -5,22 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Confirm your BuckBack email</title>
+<link rel="icon" href="favicon.png">
 <link rel="stylesheet" href="style.css">
-<style>
-  .error { color: #c0392b; }
-  [hidden] { display: none; }
-</style>
 </head>
 <body>
-<main>
+<main class="narrow">
 <p class="back"><a href="index.html">BuckBack</a></p>
+<div class="panel">
 <h1>Confirm your email</h1>
 
 <p id="checking" class="lede">Confirming your email…</p>
 
 <div id="done" hidden>
-  <p class="lede">Your email is confirmed.</p>
-  <p><a href="signup.html">Continue setting up your account</a></p>
+  <p class="lede">Your email is confirmed. Next: two-step verification, the User Agreement and a payment method for BuckBack’s fee.</p>
+  <a class="btn" href="signup.html">Continue setting up</a>
+  <p class="below">Signed up on another device? Go back to that page and tap
+    <strong>I’ve confirmed it — continue</strong>.</p>
 </div>
 
 <div id="expired" hidden>
@@ -28,6 +28,7 @@
   <p>If it's already confirmed, <a href="signup.html#signin">sign in to finish setting up</a>. If not,
     <a href="signup.html">sign up again</a> with the same email and we'll send a new link, or write to
     <a href="mailto:hello@buckback.ca">hello@buckback.ca</a>.</p>
+</div>
 </div>
 </main>
 

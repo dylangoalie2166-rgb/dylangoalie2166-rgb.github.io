@@ -5,21 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Reset your BuckBack password</title>
+<link rel="icon" href="favicon.png">
 <link rel="stylesheet" href="style.css">
-<style>
-  label { display: block; font-weight: 600; margin: 14px 0 4px; }
-  input { width: 100%; font: inherit; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 8px;
-          background: var(--bg); color: var(--text); }
-  button { margin-top: 18px; font: inherit; font-weight: 600; padding: 11px 18px; border: 0; border-radius: 8px;
-           background: #0a7ea4; color: #fff; cursor: pointer; }
-  button[disabled] { opacity: 0.6; cursor: default; }
-  .error { color: #c0392b; }
-  [hidden] { display: none; }
-</style>
 </head>
 <body>
-<main>
+<main class="narrow">
 <p class="back"><a href="index.html">BuckBack</a></p>
+<div class="panel">
 <h1>Reset your password</h1>
 
 <p id="checking" class="lede">Checking your link…</p>
@@ -42,6 +34,7 @@
 <div id="done" hidden>
   <p class="lede">Your password has been changed.</p>
   <p>Open the BuckBack app and sign in with your new password.</p>
+</div>
 </div>
 </main>
 

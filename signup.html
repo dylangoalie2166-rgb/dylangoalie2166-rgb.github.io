@@ -4,35 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Create your BuckBack account</title>
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="style.css">
-<style>
-  label { display: block; font-weight: 600; margin: 14px 0 4px; }
-  input[type=email], input[type=password], input[type=text] {
-    width: 100%; font: inherit; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 8px;
-    background: var(--bg); color: var(--text);
-  }
-  .check { display: flex; gap: 10px; align-items: flex-start; font-weight: normal; margin-top: 18px; }
-  .check input { margin-top: 6px; flex: none; }
-  button { margin-top: 18px; font: inherit; font-weight: 600; padding: 11px 18px; border: 0; border-radius: 8px;
-           background: #0a7ea4; color: #fff; cursor: pointer; }
-  button.link { background: none; color: var(--link); padding: 0; margin: 0; font-weight: normal; text-decoration: underline; }
-  button[disabled] { opacity: 0.6; cursor: default; }
-  .steps { color: var(--muted); font-size: 0.95rem; letter-spacing: 0.04em; text-transform: uppercase; }
-  .qr { display: block; width: 200px; height: 200px; background: #fff; padding: 8px; border-radius: 8px; margin: 8px 0 14px; }
-  .key { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-all; }
-  .code { letter-spacing: 0.3em; max-width: 12em; }
-  .error { color: #c0392b; }
-  [hidden] { display: none; }
-</style>
 </head>
 <body>
-<main>
+<main class="narrow">
 <p class="back"><a href="index.html">BuckBack</a></p>
 
 <p id="checking" class="lede">Loading…</p>
 
 <!-- No session: a new account, or "sign in to finish". -->
-<form id="create" hidden>
+<form id="create" class="panel" hidden>
   <h1>Create your account</h1>
   <p class="lede">BuckBack follows up with the clients who owe your business, so you get paid.</p>
   <label for="new-email">Email</label>
@@ -43,18 +26,20 @@
   <input id="new-confirm" type="password" autocomplete="new-password" minlength="8" required>
   <p class="error" hidden></p>
   <button type="submit">Create account</button>
-  <p style="margin-top: 18px">Already started? <button type="button" class="link" data-go="signin">Sign in to finish setting up</button></p>
+  <p class="below">Already started? <button type="button" class="link" data-go="signin">Sign in to finish setting up</button></p>
 </form>
 
-<div id="sent" hidden>
+<div id="sent" class="panel" hidden>
   <h1>Check your email</h1>
   <p class="lede">We've sent a link to <strong id="sent-to"></strong>. Open it to confirm your address and carry on
     setting up. It can take a minute or two — check your junk folder too.</p>
-  <p>If that email already has a BuckBack account, no email is sent —
+  <p class="error" hidden></p>
+  <button type="button" data-action="confirmed">I’ve confirmed it — continue</button>
+  <p class="below">If that email already has a BuckBack account, no email is sent —
     <button type="button" class="link" data-go="signin">sign in instead</button>.</p>
 </div>
 
-<form id="signin" hidden>
+<form id="signin" class="panel" hidden>
   <h1>Sign in</h1>
   <p class="lede">Sign in to finish setting up your account, or to change the payment method for BuckBack's fee.</p>
   <label for="email">Email</label>
@@ -63,11 +48,11 @@
   <input id="password" type="password" autocomplete="current-password" required>
   <p class="error" hidden></p>
   <button type="submit">Sign in</button>
-  <p style="margin-top: 18px">New to BuckBack? <button type="button" class="link" data-go="create">Create an account</button></p>
+  <p class="below">New to BuckBack? <button type="button" class="link" data-go="create">Create an account</button></p>
 </form>
 
 <!-- Two-step verification: every account has it (as in the app). -->
-<form id="challenge" hidden>
+<form id="challenge" class="panel" hidden>
   <h1>Enter your code</h1>
   <p class="lede">Open your authenticator app and enter the 6-digit code it shows for BuckBack.</p>
   <label for="challenge-code">Code</label>
@@ -76,21 +61,21 @@
   <button type="submit">Continue</button>
 </form>
 
-<form id="enroll" hidden>
+<form id="enroll" class="panel" hidden>
   <p class="steps">Step 1 of 3</p>
   <h1>Turn on two-step verification</h1>
   <p class="lede">Every BuckBack account signs in with a password and a code from an authenticator app, because the
     account can contact your clients in your business's name.</p>
   <p>Scan this with an authenticator app (the iPhone's Passwords app, Google Authenticator, 1Password…):</p>
   <img id="enroll-qr" class="qr" alt="Two-step verification QR code">
-  <p>Or add it by hand with this setup key: <span id="enroll-key" class="key"></span></p>
+  <p class="meta">Or add it by hand with this setup key: <span id="enroll-key" class="key"></span></p>
   <label for="enroll-code">Then enter the 6-digit code it shows</label>
   <input id="enroll-code" class="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required>
   <p class="error" hidden></p>
   <button type="submit">Turn it on</button>
 </form>
 
-<form id="terms" hidden>
+<form id="terms" class="panel" hidden>
   <p class="steps">Step 2 of 3</p>
   <h1>Before you start</h1>
   <p class="lede">Using BuckBack means agreeing to its <a href="terms.html" target="_blank">User Agreement</a> and
@@ -110,19 +95,19 @@
   <button type="submit">I agree</button>
 </form>
 
-<div id="billing" hidden>
+<div id="billing" class="panel" hidden>
   <p class="steps">Step 3 of 3</p>
   <h1>How BuckBack gets paid</h1>
   <p class="lede">Add a card or bank account for BuckBack's fee. You only pay when BuckBack gets you paid, and nothing
     is charged today.</p>
-  <p>No monthly fee: BuckBack keeps 5% of the first $10,000 it recovers on an account, 3% up to $50,000 and 1.5% above
+  <p class="note">No monthly fee: BuckBack keeps 5% of the first $10,000 it recovers on an account, 3% up to $50,000 and 1.5% above
     that. Payments through BuckBack's pay link have the fee taken automatically; money paid to you directly after
     BuckBack has been in touch goes on a monthly statement, charged to this card or bank account.</p>
   <p class="error" hidden></p>
   <button type="button" data-action="billing">Add payment method</button>
 </div>
 
-<div id="ready" hidden>
+<div id="ready" class="panel" hidden>
   <h1>Your account is ready</h1>
   <p class="lede">Open BuckBack on your iPhone and sign in with this email and password.</p>
   <p>BuckBack's fee is charged to <strong id="ready-method"></strong>.
@@ -172,6 +157,9 @@
   const value = (id) => document.getElementById(id).value.trim();
 
   let factorId = null;
+  // What was just signed up with, so "I've confirmed it" can sign in here
+  // even when the link was opened on another device. Only kept in memory.
+  let pending = null;
 
   // Where a signed-in account is in setting up, and that step.
   async function next() {
@@ -238,6 +226,7 @@
       if (error) throw error;
       // Email confirmation is on, so there's no session until the link is opened.
       if (data.session) return next();
+      pending = { email, password };
       document.getElementById('sent-to').textContent = email;
       show('sent');
     });
@@ -254,6 +243,20 @@
       await next();
     });
   });
+
+  document.querySelector('[data-action=confirmed]').addEventListener('click', () => busy('sent', async () => {
+    const { data: { session } } = await client.auth.getSession();
+    if (!session) {
+      const { error } = await client.auth.signInWithPassword(pending);
+      if (error) {
+        throw new Error(/confirm/i.test(error.message)
+          ? 'Not confirmed yet. Open the link in the email first — it can take a minute or two to arrive.'
+          : error.message);
+      }
+    }
+    pending = null;
+    await next();
+  }));
 
   document.getElementById('challenge').addEventListener('submit', (e) => {
     e.preventDefault();
