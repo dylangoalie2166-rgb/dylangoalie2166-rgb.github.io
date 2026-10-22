@@ -20,13 +20,14 @@
 
 <div id="done" hidden>
   <p class="lede">Your email is confirmed.</p>
-  <p>Go back to the BuckBack app and sign in.</p>
+  <p><a href="signup.html">Continue setting up your account</a></p>
 </div>
 
 <div id="expired" hidden>
   <p>This link has expired or has already been used.</p>
-  <p>If you can sign in to the BuckBack app, you're all set. If not, sign up again with the same email
-    and we'll send a new link, or write to <a href="mailto:hello@buckback.ca">hello@buckback.ca</a>.</p>
+  <p>If it's already confirmed, <a href="signup.html#signin">sign in to finish setting up</a>. If not,
+    <a href="signup.html">sign up again</a> with the same email and we'll send a new link, or write to
+    <a href="mailto:hello@buckback.ca">hello@buckback.ca</a>.</p>
 </div>
 </main>
 
@@ -34,12 +35,13 @@
 <script>
   // The "Confirm signup" email (Supabase → Authentication → Emails) links here
   // with ?token_hash=…&type=email. Confirming happens only when this page runs
-  // it, not when the link is merely fetched. The key below is the project's
-  // publishable key — the same one the app ships.
+  // it, not when the link is merely fetched. It leaves this browser signed in
+  // (same storageKey as signup.html), so setting up carries on there. The key
+  // below is the project's publishable key — the same one the app ships.
   const client = supabase.createClient(
     'https://euefhwgvjkyqtpghivcq.supabase.co',
     'sb_publishable_PYe2X_7SZHgAKbhiZ83q4Q_JOlVarMn',
-    { auth: { detectSessionInUrl: false, persistSession: false, autoRefreshToken: false } },
+    { auth: { storageKey: 'buckback-web', detectSessionInUrl: false } },
   );
   const show = (id) => {
     for (const el of ['checking', 'done', 'expired']) document.getElementById(el).hidden = el !== id;
@@ -57,8 +59,6 @@
       .verifyOtp({ token_hash: tokenHash, type: params.get('type') || 'email' })
       .then(async ({ error }) => {
         if (error) return show('expired');
-        // Confirming signs this browser in; the account is used in the app, not here.
-        await client.auth.signOut().catch(() => {});
         show('done');
       })
       .catch(() => show('expired'));

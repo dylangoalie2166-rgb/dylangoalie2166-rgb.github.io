@@ -32,9 +32,9 @@
 <form id="form" hidden>
   <p>Choose a new password for your BuckBack account.</p>
   <label for="password">New password</label>
-  <input id="password" type="password" autocomplete="new-password" minlength="6" required>
+  <input id="password" type="password" autocomplete="new-password" minlength="8" required>
   <label for="confirm">Type it again</label>
-  <input id="confirm" type="password" autocomplete="new-password" minlength="6" required>
+  <input id="confirm" type="password" autocomplete="new-password" minlength="8" required>
   <p id="problem" class="error" hidden></p>
   <button id="save" type="submit">Save new password</button>
 </form>
@@ -84,7 +84,7 @@
       problem.textContent = text;
       problem.hidden = false;
     };
-    if (password.length < 6) return say('Use at least 6 characters.');
+    if (password.length < 8) return say('Use at least 8 characters.');
     if (password !== document.getElementById('confirm').value) return say('Those two passwords don’t match.');
     problem.hidden = true;
     const button = document.getElementById('save');

@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create your BuckBack account</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  label { display: block; font-weight: 600; margin: 14px 0 4px; }
+  input[type=email], input[type=password], input[type=text] {
+    width: 100%; font: inherit; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 8px;
+    background: var(--bg); color: var(--text);
+  }
+  .check { display: flex; gap: 10px; align-items: flex-start; font-weight: normal; margin-top: 18px; }
+  .check input { margin-top: 6px; flex: none; }
+  button { margin-top: 18px; font: inherit; font-weight: 600; padding: 11px 18px; border: 0; border-radius: 8px;
+           background: #0a7ea4; color: #fff; cursor: pointer; }
+  button.link { background: none; color: var(--link); padding: 0; margin: 0; font-weight: normal; text-decoration: underline; }
+  button[disabled] { opacity: 0.6; cursor: default; }
+  .steps { color: var(--muted); font-size: 0.95rem; letter-spacing: 0.04em; text-transform: uppercase; }
+  .qr { display: block; width: 200px; height: 200px; background: #fff; padding: 8px; border-radius: 8px; margin: 8px 0 14px; }
+  .key { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-all; }
+  .code { letter-spacing: 0.3em; max-width: 12em; }
+  .error { color: #c0392b; }
+  [hidden] { display: none; }
+</style>
+</head>
+<body>
+<main>
+<p class="back"><a href="index.html">BuckBack</a></p>
+
+<p id="checking" class="lede">Loading…</p>
+
+<!-- No session: a new account, or "sign in to finish". -->
+<form id="create" hidden>
+  <h1>Create your account</h1>
+  <p class="lede">BuckBack follows up with the clients who owe your business, so you get paid.</p>
+  <label for="new-email">Email</label>
+  <input id="new-email" type="email" autocomplete="email" placeholder="you@business.com" required>
+  <label for="new-password">Password</label>
+  <input id="new-password" type="password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" required>
+  <label for="new-confirm">Type it again</label>
+  <input id="new-confirm" type="password" autocomplete="new-password" minlength="8" required>
+  <p class="error" hidden></p>
+  <button type="submit">Create account</button>
+  <p style="margin-top: 18px">Already started? <button type="button" class="link" data-go="signin">Sign in to finish setting up</button></p>
+</form>
+
+<div id="sent" hidden>
+  <h1>Check your email</h1>
+  <p class="lede">We've sent a link to <strong id="sent-to"></strong>. Open it to confirm your address and carry on
+    setting up. It can take a minute or two — check your junk folder too.</p>
+</div>
+
+<form id="signin" hidden>
+  <h1>Sign in</h1>
+  <p class="lede">Sign in to finish setting up your account, or to change the payment method for BuckBack's fee.</p>
+  <label for="email">Email</label>
+  <input id="email" type="email" autocomplete="email" required>
+  <label for="password">Password</label>
+  <input id="password" type="password" autocomplete="current-password" required>
+  <p class="error" hidden></p>
+  <button type="submit">Sign in</button>
+  <p style="margin-top: 18px">New to BuckBack? <button type="button" class="link" data-go="create">Create an account</button></p>
+</form>
+
+<!-- Two-step verification: every account has it (as in the app). -->
+<form id="challenge" hidden>
+  <h1>Enter your code</h1>
+  <p class="lede">Open your authenticator app and enter the 6-digit code it shows for BuckBack.</p>
+  <label for="challenge-code">Code</label>
+  <input id="challenge-code" class="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required>
+  <p class="error" hidden></p>
+  <button type="submit">Continue</button>
+</form>
+
+<form id="enroll" hidden>
+  <p class="steps">Step 1 of 3</p>
+  <h1>Turn on two-step verification</h1>
+  <p class="lede">Every BuckBack account signs in with a password and a code from an authenticator app, because the
+    account can contact your clients in your business's name.</p>
+  <p>Scan this with an authenticator app (the iPhone's Passwords app, Google Authenticator, 1Password…):</p>
+  <img id="enroll-qr" class="qr" alt="Two-step verification QR code">
+  <p>Or add it by hand with this setup key: <span id="enroll-key" class="key"></span></p>
+  <label for="enroll-code">Then enter the 6-digit code it shows</label>
+  <input id="enroll-code" class="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required>
+  <p class="error" hidden></p>
+  <button type="submit">Turn it on</button>
+</form>
+
+<form id="terms" hidden>
+  <p class="steps">Step 2 of 3</p>
+  <h1>Before you start</h1>
+  <p class="lede">Using BuckBack means agreeing to its <a href="terms.html" target="_blank">User Agreement</a> and
+    <a href="privacy.html" target="_blank">Privacy Policy</a>. These are the main points — please read the full
+    agreement too.</p>
+  <ul>
+    <li>Only add money that's really owed to your business and already overdue, with the right amount.</li>
+    <li>The AI contacts your clients in your business's name. It can make mistakes, and nothing it says is legal advice.</li>
+    <li>Demand letters go out in your name. What they say about the balance is yours to get right.</li>
+    <li>BuckBack keeps 5% of the first $10,000 recovered on an account, 3% up to $50,000 and 1.5% above that — also
+      when a client BuckBack has contacted pays you directly. Record those payments.</li>
+    <li>BuckBack can't promise a client will pay, and its liability to you is limited.</li>
+  </ul>
+  <label class="check"><input id="agree" type="checkbox" required>
+    <span>I've read and agree to the User Agreement and the Privacy Policy, for myself and my business.</span></label>
+  <p class="error" hidden></p>
+  <button type="submit">I agree</button>
+</form>
+
+<div id="billing" hidden>
+  <p class="steps">Step 3 of 3</p>
+  <h1>How BuckBack gets paid</h1>
+  <p class="lede">Add a card or bank account for BuckBack's fee. You only pay when BuckBack gets you paid, and nothing
+    is charged today.</p>
+  <p>No monthly fee: BuckBack keeps 5% of the first $10,000 it recovers on an account, 3% up to $50,000 and 1.5% above
+    that. Payments through BuckBack's pay link have the fee taken automatically; money paid to you directly after
+    BuckBack has been in touch goes on a monthly statement, charged to this card or bank account.</p>
+  <p class="error" hidden></p>
+  <button type="button" data-action="billing">Add payment method</button>
+</div>
+
+<div id="ready" hidden>
+  <h1>Your account is ready</h1>
+  <p class="lede">Open BuckBack on your iPhone and sign in with this email and password.</p>
+  <p>BuckBack's fee is charged to <strong id="ready-method"></strong>.
+    <button type="button" class="link" data-action="billing">Change payment method</button></p>
+  <p class="error" hidden></p>
+  <p><button type="button" class="link" data-action="signout">Sign out of this browser</button></p>
+</div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // Accounts are created here, not in the app (App Store guideline 3.1.1):
+  // sign up → confirm the email (confirmed.html, which leaves this browser
+  // signed in) → two-step verification → the User Agreement → the payment
+  // method for BuckBack's fee (billing-setup, then billing-done.html). Each
+  // step is the same check the app makes, so an account finished in either
+  // place is finished in both. The key below is the project's publishable key
+  // — the same one the app ships.
+  const TERMS_VERSION = '2026-10-07'; // must match TERMS_VERSION in App.js
+  const client = supabase.createClient(
+    'https://euefhwgvjkyqtpghivcq.supabase.co',
+    'sb_publishable_PYe2X_7SZHgAKbhiZ83q4Q_JOlVarMn',
+    { auth: { storageKey: 'buckback-web', detectSessionInUrl: false } },
+  );
+  const SECTIONS = ['checking', 'create', 'sent', 'signin', 'challenge', 'enroll', 'terms', 'billing', 'ready'];
+  const show = (id) => {
+    for (const el of SECTIONS) document.getElementById(el).hidden = el !== id;
+  };
+  const say = (section, text) => {
+    const el = document.getElementById(section).querySelector('.error');
+    el.textContent = text || '';
+    el.hidden = !text;
+  };
+  // Runs a step with its button(s) disabled; any error is shown in that step.
+  const busy = async (section, fn) => {
+    const buttons = document.getElementById(section).querySelectorAll('button');
+    buttons.forEach((b) => (b.disabled = true));
+    say(section, '');
+    try {
+      await fn();
+    } catch (err) {
+      say(section, err?.message || 'Something went wrong. Please try again.');
+    } finally {
+      buttons.forEach((b) => (b.disabled = false));
+    }
+  };
+  const value = (id) => document.getElementById(id).value.trim();
+
+  let factorId = null;
+
+  // Where a signed-in account is in setting up, and that step.
+  async function next() {
+    const { data: { session } } = await client.auth.getSession();
+    if (!session) return show(location.hash === '#signin' ? 'signin' : 'create');
+    const userId = session.user.id;
+
+    const [{ data: level }, { data: factors }, { data: exempt }] = await Promise.all([
+      client.auth.mfa.getAuthenticatorAssuranceLevel(),
+      client.auth.mfa.listFactors(),
+      client.from('two_step_exempt').select('user_id').eq('user_id', userId).maybeSingle(),
+    ]);
+    const factor = (factors?.totp ?? [])[0] ?? null;
+    if (factor && level?.currentLevel !== 'aal2') {
+      factorId = factor.id;
+      return show('challenge');
+    }
+    if (!factor && !exempt) return startEnroll();
+
+    const { data: accepted } = await client
+      .from('terms_acceptances').select('version').eq('user_id', userId).eq('version', TERMS_VERSION).maybeSingle();
+    if (!accepted) return show('terms');
+
+    const { data: profile } = await client.from('profiles').select('billing_method').eq('id', userId).maybeSingle();
+    if (!profile?.billing_method) return show('billing');
+    document.getElementById('ready-method').textContent = profile.billing_method;
+    show('ready');
+  }
+
+  async function startEnroll() {
+    // An earlier setup that was never finished would block a new one.
+    const { data: existing } = await client.auth.mfa.listFactors();
+    for (const f of existing?.all ?? []) {
+      if (f.factor_type === 'totp' && f.status !== 'verified') await client.auth.mfa.unenroll({ factorId: f.id });
+    }
+    const { data, error } = await client.auth.mfa.enroll({
+      factorType: 'totp',
+      issuer: 'BuckBack',
+      friendlyName: `BuckBack ${Date.now()}`,
+    });
+    show('enroll');
+    if (error || !data?.totp) return say('enroll', error?.message || 'Couldn’t start setup. Reload the page to try again.');
+    factorId = data.id;
+    document.getElementById('enroll-qr').src = data.totp.qr_code;
+    document.getElementById('enroll-key').textContent = data.totp.secret;
+  }
+
+  const WRONG_CODE = 'That code didn’t work. Codes change every 30 seconds — enter the one showing for BuckBack right now.';
+  const verify = (section, inputId) => busy(section, async () => {
+    const { error } = await client.auth.mfa.challengeAndVerify({ factorId, code: value(inputId) });
+    document.getElementById(inputId).value = '';
+    if (error) throw new Error(WRONG_CODE);
+    await next();
+  });
+
+  document.getElementById('create').addEventListener('submit', (e) => {
+    e.preventDefault();
+    busy('create', async () => {
+      const email = value('new-email');
+      const password = document.getElementById('new-password').value;
+      if (password.length < 8) throw new Error('Use a password of at least 8 characters.');
+      if (password !== document.getElementById('new-confirm').value) throw new Error('Those two passwords don’t match.');
+      const { data, error } = await client.auth.signUp({ email, password });
+      if (error) throw error;
+      // Email confirmation is on, so there's no session until the link is opened.
+      if (data.session) return next();
+      document.getElementById('sent-to').textContent = email;
+      show('sent');
+    });
+  });
+
+  document.getElementById('signin').addEventListener('submit', (e) => {
+    e.preventDefault();
+    busy('signin', async () => {
+      const { error } = await client.auth.signInWithPassword({
+        email: value('email'),
+        password: document.getElementById('password').value,
+      });
+      if (error) throw error;
+      await next();
+    });
+  });
+
+  document.getElementById('challenge').addEventListener('submit', (e) => {
+    e.preventDefault();
+    verify('challenge', 'challenge-code');
+  });
+  document.getElementById('enroll').addEventListener('submit', (e) => {
+    e.preventDefault();
+    verify('enroll', 'enroll-code');
+  });
+
+  document.getElementById('terms').addEventListener('submit', (e) => {
+    e.preventDefault();
+    busy('terms', async () => {
+      const { data: { session } } = await client.auth.getSession();
+      const { error } = await client.from('terms_acceptances').insert({ user_id: session.user.id, version: TERMS_VERSION });
+      // 23505: already accepted (in the app, say) — that's a yes.
+      if (error && error.code !== '23505') throw new Error('Couldn’t save that. Check your connection and try again.');
+      await next();
+    });
+  });
+
+  // Stripe's page to save a card or bank account; it comes back to billing-done.html.
+  for (const button of document.querySelectorAll('[data-action=billing]')) {
+    const section = button.closest('[id]').id;
+    button.addEventListener('click', () => busy(section, async () => {
+      const { data, error } = await client.functions.invoke('billing-setup', { body: {} });
+      if (error || !data?.url) {
+        let reason = data?.error;
+        try {
+          reason = reason || (await error?.context?.json())?.error;
+        } catch {}
+        throw new Error(reason || 'Couldn’t open the payment page. Please try again.');
+      }
+      location.href = data.url;
+    }));
+  }
+
+  document.querySelector('[data-action=signout]').addEventListener('click', async () => {
+    await client.auth.signOut().catch(() => {});
+    show('signin');
+  });
+
+  for (const link of document.querySelectorAll('[data-go]')) {
+    link.addEventListener('click', () => show(link.dataset.go));
+  }
+
+  next().catch(() => show('create'));
+</script>
+</body>
+</html>
