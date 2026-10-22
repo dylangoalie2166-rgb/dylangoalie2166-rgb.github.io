@@ -56,11 +56,11 @@ strong { font-weight: 650; }
 
 /* The brand bar at the top of every page (<p class="back"><a>BuckBack</a></p>). */
 .back { margin: 0 0 32px; }
-.back a {
+.back a, .back span {
   display: inline-flex; align-items: center; gap: 10px;
   color: var(--text); text-decoration: none; font-weight: 700; font-size: 1.15rem; letter-spacing: -0.01em;
 }
-.back a::before {
+.back a::before, .back span::before {
   content: ""; width: 34px; height: 34px; border-radius: 9px;
   background: url(icon.png) center / cover;
 }
