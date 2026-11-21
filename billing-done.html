@@ -13,7 +13,9 @@
 <div class="panel">
 <h1 id="title">Payment method saved</h1>
 <p class="lede" id="body">BuckBack will use it for your monthly statement — only ever for fees on
-money recovered for you. Your account is ready: open BuckBack on your iPhone and sign in.</p>
+money recovered for you. Your account is ready: get the BuckBack app on your iPhone and sign in with the
+same email and password.</p>
+<a class="btn" id="get-app" href="https://apps.apple.com/ca/app/buckback/id6818407466">Get the iPhone app</a>
 <a class="btn secondary" href="signup.html">Back to your account</a>
 </div>
 </main>
@@ -22,6 +24,7 @@ money recovered for you. Your account is ready: open BuckBack on your iPhone and
     document.getElementById('title').textContent = 'Nothing saved';
     document.getElementById('body').textContent =
       'No payment method was added. The AI can’t start until there is one — go back to your account to add it.';
+    document.getElementById('get-app').remove();
   }
 </script>
 </body>
