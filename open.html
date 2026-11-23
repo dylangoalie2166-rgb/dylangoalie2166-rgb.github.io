@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Open in BuckBack</title>
+<link rel="icon" href="favicon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="narrow">
+<p class="back"><a href="index.html">BuckBack</a></p>
+<div class="panel">
+<h1>Opening BuckBack…</h1>
+<p class="lede">If the app doesn't open by itself, tap the button.</p>
+<a id="open" class="btn" href="buckback://">Open in BuckBack</a>
+<p class="below">This link opens a client's page in the BuckBack iPhone app. Don't have it?
+  <a href="https://apps.apple.com/ca/app/buckback/id6818407466">Get it on the App Store</a>.</p>
+</div>
+</main>
+<script>
+  // Links in BuckBack's emails (the daily call report) come here, because
+  // some mail apps won't open an app link directly: buckback.ca/open.html?client=<id>
+  // → buckback://client/<id>, which the app opens on that client's page.
+  var id = new URLSearchParams(location.search).get('client') || '';
+  if (/^[0-9a-f-]{36}$/i.test(id)) {
+    var url = 'buckback://client/' + id;
+    document.getElementById('open').href = url;
+    location.href = url;
+  }
+</script>
+</body>
+</html>
