@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Confirm your payment</title>
+<link rel="icon" href="favicon.png">
+<link rel="stylesheet" href="style.css">
+<style>
+  .field { margin: 0 0 16px; }
+  .field label { display: block; font-weight: 600; margin-bottom: 6px; }
+  .field select, .field input { width: 100%; box-sizing: border-box; font: inherit; padding: 10px 12px;
+    border: 1px solid #d0d5dd; border-radius: 8px; background: #fff; }
+  button.btn { border: 0; cursor: pointer; font: inherit; }
+  .error { color: #b42318; }
+</style>
+</head>
+<body>
+<main class="narrow">
+<p class="back">BuckBack</p>
+<div class="panel">
+
+<div id="loading"><p class="lede">One moment…</p></div>
+
+<div id="form" hidden>
+  <h1>Already paid?</h1>
+  <p class="lede">Let us know how you paid your <strong id="amount"></strong> balance with <strong class="biz"></strong>,
+    and you'll get a receipt by email once they confirm it.</p>
+  <div class="field">
+    <label for="how">How did you pay?</label>
+    <select id="how">
+      <option value="cash">Cash</option>
+      <option value="cheque">Cheque</option>
+      <option value="etransfer">E-transfer</option>
+      <option value="card">Card</option>
+      <option value="other">Another way</option>
+    </select>
+  </div>
+  <div class="field">
+    <label for="when">When? <span style="font-weight:400;color:#687076">(roughly is fine)</span></label>
+    <input id="when" type="date">
+  </div>
+  <button id="send" class="btn" type="button">Confirm my payment</button>
+  <p id="err" class="error" hidden>Something went wrong. Please try again, or reply to the email you got.</p>
+  <p class="below">Haven't paid? There's nothing to do. Your balance is closed.</p>
+</div>
+
+<div id="done" hidden>
+  <h1>Thanks, we've got it</h1>
+  <p class="lede">We've asked <strong class="biz"></strong> to confirm your payment. Once they do, your receipt will be emailed to you.</p>
+</div>
+
+<div id="claimed" hidden>
+  <h1>Already received</h1>
+  <p class="lede">You've already told us you paid. <strong class="biz"></strong> has been asked to confirm it, and your receipt will follow by email.</p>
+</div>
+
+<div id="paid" hidden>
+  <h1>All settled</h1>
+  <p class="lede">This balance is recorded as paid. Nothing more to do.</p>
+</div>
+
+<div id="gone" hidden>
+  <h1>Link not available</h1>
+  <p class="lede">This link has expired or isn't valid. If you have a question about your balance, reply to the email you got.</p>
+</div>
+
+</div>
+</main>
+<script>
+  // From the "your balance is closed" email (close-account): the client says
+  // they already paid → confirm-paid opens a payment claim the business must
+  // confirm, and a receipt is emailed once they do.
+  var API = 'https://euefhwgvjkyqtpghivcq.supabase.co/functions/v1/confirm-paid';
+  var t = new URLSearchParams(location.search).get('t') || '';
+  function show(id) {
+    ['loading', 'form', 'done', 'claimed', 'paid', 'gone'].forEach(function (x) {
+      document.getElementById(x).hidden = x !== id;
+    });
+  }
+  function call(body) {
+    return fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json(); });
+  }
+  function fill(d) {
+    document.querySelectorAll('.biz').forEach(function (el) { el.textContent = d.business || 'the business'; });
+    if (d.amount) document.getElementById('amount').textContent = d.amount;
+  }
+  document.getElementById('when').max = new Date().toISOString().slice(0, 10);
+  call({ t: t }).then(function (d) {
+    fill(d);
+    show(d.status === 'open' ? 'form' : d.status === 'claimed' ? 'claimed' : d.status === 'paid' ? 'paid' : 'gone');
+  }).catch(function () { show('gone'); });
+  document.getElementById('send').onclick = function () {
+    var btn = this;
+    btn.disabled = true;
+    document.getElementById('err').hidden = true;
+    call({ t: t, how: document.getElementById('how').value, when: document.getElementById('when').value })
+      .then(function (d) {
+        fill(d);
+        if (d.status === 'received') show('done');
+        else if (d.status === 'claimed') show('claimed');
+        else if (d.status === 'paid') show('paid');
+        else if (d.error) { document.getElementById('err').hidden = false; btn.disabled = false; }
+        else show('gone');
+      })
+      .catch(function () { document.getElementById('err').hidden = false; btn.disabled = false; });
+  };
+</script>
+</body>
+</html>
