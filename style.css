@@ -145,3 +145,7 @@ footer a { color: var(--muted); margin-right: 16px; white-space: nowrap; display
   .cta-row .btn { flex: 1 1 100%; }
   .panel { padding: 22px 18px; }
 }
+
+/* What to do after signing up: get the app. */
+.next-steps { padding-left: 1.3em; margin: 0 0 20px; line-height: 1.6; }
+.next-steps li { margin-bottom: 6px; }

@@ -11,11 +11,17 @@
 <main class="narrow">
 <p class="back"><a href="index.html">BuckBack</a></p>
 <div class="panel">
-<h1 id="title">Payment method saved</h1>
-<p class="lede" id="body">BuckBack will use it for your monthly statement — only ever for fees on
-money recovered for you. Your account is ready: get the BuckBack app on your iPhone and sign in with the
-same email and password.</p>
-<a class="btn" id="get-app" href="https://apps.apple.com/ca/app/buckback/id6818407466">Get the iPhone app</a>
+<h1 id="title">You're all set! Now get the app</h1>
+<p class="lede" id="body">Your account is ready. BuckBack runs in the iPhone app.</p>
+<div id="get-app">
+<ol class="next-steps">
+  <li><strong>Download BuckBack</strong> from the App Store.</li>
+  <li><strong>Open it and sign in</strong> with the email and password you just made.</li>
+  <li><strong>Enter the 6-digit code</strong> from your authenticator app.</li>
+</ol>
+<a class="btn" href="https://apps.apple.com/ca/app/buckback/id6818407466">Download BuckBack on the App Store</a>
+</div>
+<p class="note">Your payment method is saved. It's only used for BuckBack's fee on money recovered for you.</p>
 <a class="btn secondary" href="signup.html">Back to your account</a>
 </div>
 </main>
@@ -23,7 +29,7 @@ same email and password.</p>
   if (new URLSearchParams(location.search).get('cancelled')) {
     document.getElementById('title').textContent = 'Nothing saved';
     document.getElementById('body').textContent =
-      'No payment method was added. The AI can’t start until there is one — go back to your account to add it.';
+      'No payment method was added. BuckBack can’t start until there is one — go back to your account to add it.';
     document.getElementById('get-app').remove();
   }
 </script>
