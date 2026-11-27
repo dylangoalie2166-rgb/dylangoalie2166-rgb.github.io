@@ -10,7 +10,7 @@
   (function () {
     var t = new URLSearchParams(location.search).get('t') || '';
     if (/^[a-f0-9]{32}$/.test(t)) {
-      location.replace('https://euefhwgvjkyqtpghivcq.supabase.co/functions/v1/pay?t=' + t);
+      location.replace('https://oovhtrvglvmykjqiioim.supabase.co/functions/v1/pay?t=' + t);
     } else {
       location.replace('pay-unavailable.html?r=notfound');
     }
